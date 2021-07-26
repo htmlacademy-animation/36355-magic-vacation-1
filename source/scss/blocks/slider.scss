@@ -39,6 +39,7 @@
   &:nth-child(even) {
     .slider__item-text {
       align-self: flex-end;
+      transition: transform 0.4s ease-out 0.2s, opacity 0.4s ease-out 0.2s;
 
       @media (max-width: $mobile) and (orientation: landscape) {
         align-self: flex-start;
@@ -96,6 +97,9 @@
   max-width: 34rem;
   font-size: 1.8rem;
   line-height: 2rem;
+  transform: translateX(50px);
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 
   @media (min-width: $stop-scaling) {
     margin-top: 36px;
@@ -122,6 +126,12 @@
     min-height: 14rem;
     font-size: 1.4rem;
     line-height: 1.5rem;
+  }
+
+  .swiper-slide-active &,
+  .swiper-slide-next & {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
