@@ -117,10 +117,42 @@
   }
 }
 
+@keyframes scale-bullet {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes show-bullet-figure {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes show-text {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .rules__item {
   position: relative;
   margin: 0 0 6.2rem;
-  padding-top: 0.6rem;
+  padding-top: 0.9rem;
   padding-left: 6.5rem;
   break-inside: avoid;
 
@@ -145,20 +177,52 @@
   }
 
   &::before {
+    content: "";
+    position: absolute;
+    top: 0.3rem;
+    left: 0;
+    width: 4.5rem;
+    height: 4.5rem;
+    background-color: $c-purple;
+    border-radius: 50%;
+    transform: scale(0);
+    animation-name: scale-bullet;
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.5, 0.87, 0.64, 1.36);
+    animation-fill-mode: forwards;
+
+    @media (max-width: $tablet) and (orientation: portrait) {
+      top: 1rem;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    @media (max-width: $mobile) and (orientation: landscape) {
+      top: 0.6rem;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  &::after {
     content: counter(li);
     counter-increment: li;
     position: absolute;
-    top: 0;
+    top: 0.3rem;
     left: 0;
     width: 4.5rem;
     height: 4.5rem;
     font-family: $font-alt;
     font-weight: 400;
     font-size: 2.4rem;
-    background-color: $c-purple;
-    border-radius: 50%;
     line-height: 5rem;
     text-align: center;
+    opacity: 0;
+    animation-name: show-bullet-figure;
+    animation-duration: 0.2s;
+    animation-delay: 0.1s;
+    animation-timing-function: cubic-bezier(0.5, 0.87, 0.64, 1.36);
+    animation-fill-mode: forwards;
 
     @media (max-width: $tablet) and (orientation: portrait) {
       top: 1rem;
@@ -179,9 +243,30 @@
 
   p {
     margin: 0;
+    opacity: 0;
+    transform: translateX(20px);
+    animation-name: show-text;
+    animation-duration: 0.2s;
+    animation-delay: 0.2s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
 
     @media (max-width: $tablet) and (orientation: portrait) {
       min-height: calc(1.4rem * 2.2);
+    }
+  }
+
+  @for $i from 2 through 4 {
+    &:nth-child(#{$i})::before {
+      animation-delay: ($i - 1) * 0.2s;
+    }
+
+    &:nth-child(#{$i})::after {
+      animation-delay: ($i - 1) * 0.2s + 0.1s;
+    }
+    
+    &:nth-child(#{$i}) p {
+      animation-delay: ($i - 1) * 0.2s + 0.2s;
     }
   }
 }
